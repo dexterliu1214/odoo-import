@@ -3,11 +3,11 @@ import { parse } from "https://deno.land/std@0.195.0/datetime/parse.ts";
 import { Client } from "https://deno.land/x/postgres@v0.17.0/mod.ts";
 import { format } from "https://deno.land/std@0.195.0/datetime/format.ts";
 
-const YEAR = 112
-
-const response = await fetch(`https://www.dgpa.gov.tw/FileConversion?filename=dgpa/files/202206/d52179b9-5e82-489b-86fd-716e959bfa5c.csv&nfix=&name=${YEAR}年中華民國政府行政機關辦公日曆表.csv`)
+console.log(Deno.env.get('CSV'))
+const response = await fetch(Deno.env.get('CSV'))
 const big5Text = await response.arrayBuffer()
 let text = new TextDecoder("big5").decode(big5Text);
+console.log(text)
 const content = await csv.parse(text, { skipFirstRow: true });
 let connectionString = Deno.env.get("DB") ?? 'odoo:odoo@localhost:5432/odoo'
 const client = new Client(`postgres://${connectionString}`);
