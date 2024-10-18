@@ -5,9 +5,7 @@ import { format } from "https://deno.land/std@0.195.0/datetime/format.ts";
 
 console.log(Deno.env.get('CSV'))
 const response = await fetch(Deno.env.get('CSV'))
-const big5Text = await response.arrayBuffer()
-let text = new TextDecoder("big5").decode(big5Text);
-console.log(text)
+const text = await response.text()
 const content = await csv.parse(text, { skipFirstRow: true });
 let connectionString = Deno.env.get("DB") ?? 'odoo:odoo@localhost:5432/odoo'
 const client = new Client(`postgres://${connectionString}`);
